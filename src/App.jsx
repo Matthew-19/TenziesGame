@@ -20,8 +20,7 @@ export default function App() {
   const [isWinner, setIsWinner] = React.useState(false);
   const [isAllSelected, setIsAllSelected] = React.useState(false);
 
-  const NewPlayer = localStorage.getItem("newPlayer") || true;
-  const highscoreCounter = localStorage.getItem("counter") || 0;
+  let highscoreCounter = localStorage.getItem("counter") || 0;
 
   const diceElements = dice.map((item) => (
     <Dice
@@ -40,12 +39,13 @@ export default function App() {
       if (playerWon) {
         setIsWinner(true);
         setButton("Congrats! You Won!!");
-        if (NewPlayer) {
-          localStorage.setItem("newPlayer", false);
-          localStorage.setItem("counter", counter);
-        } else {
-          highscoreCounter = min(localStorage.getItem("counter"), counter);
-        }
+
+        highscoreCounter =
+          localStorage.getItem("counter") === 0
+            ? Math.min(localStorage.getItem("counter"), counter)
+            : counter;
+        console.log(highscoreCounter);
+        localStorage.setItem("counter", highscoreCounter);
       }
     }
   }
