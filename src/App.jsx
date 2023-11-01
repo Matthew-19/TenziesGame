@@ -2,10 +2,11 @@ import React from "react";
 import Dice from "./components/Dice";
 
 export default function App() {
-  const diceArray = Array.from(
-    { length: 10 },
-    () => Math.floor(Math.random() * 10) + 1
-  );
+  function generateRandomNumber() {
+    return Math.ceil(Math.random() * 6);
+  }
+
+  const diceArray = Array.from({ length: 10 }, generateRandomNumber);
   const diceData = diceArray.map((dice, index) => ({
     id: index,
     selected: false,
@@ -46,7 +47,7 @@ export default function App() {
       return prevDice.map((item) => {
         return item.selected
           ? item
-          : { ...item, value: Math.floor(Math.random() * 10) + 1 };
+          : { ...item, value: generateRandomNumber() };
       });
     });
   }
@@ -64,7 +65,7 @@ export default function App() {
       <div className="game--container">
         <div className="dice--container">{diceElements}</div>
         <button className="roll--button" onClick={handleRoll}>
-          {isWinner ? "Congrats! We have got a Winner!" : "Roll"}
+          {victoryMsg}
         </button>
       </div>
     </main>
