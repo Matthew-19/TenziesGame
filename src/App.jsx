@@ -12,8 +12,16 @@ export default function App() {
     selected: false,
     value: dice,
   }));
-
   const [dice, setDice] = React.useState(diceData);
+
+  const [counter, setCounter] = React.useState(0);
+  const [timer, setTimer] = React.useState(0);
+  const [button, setButton] = React.useState("Roll");
+  const [isWinner, setIsWinner] = React.useState(false);
+  const [isAllSelected, setIsAllSelected] = React.useState(false);
+
+  const NewPlayer = localStorage.getItem("newPlayer") || true;
+  const highscoreCounter = localStorage.getItem("counter") || 0;
 
   const diceElements = dice.map((item) => (
     <Dice
@@ -25,12 +33,20 @@ export default function App() {
     />
   ));
 
-  let isWinner = false;
   function winnerCheck() {
-    const isAllSelected = dice.every((item) => item.selected);
     if (isAllSelected) {
       let firstNum = dice[0].value;
-      isWinner = dice.every((item) => item.value === firstNum);
+      let playerWon = dice.every((item) => item.value === firstNum);
+      if (playerWon) {
+        setIsWinner(true);
+        setButton("Congrats! You Won!!");
+        if (NewPlayer) {
+          localStorage.setItem("newPlayer", false);
+          localStorage.setItem("counter", counter);
+        } else {
+          highscoreCounter = min(localStorage.getItem("counter"), counter);
+        }
+      }
     }
   }
 
@@ -43,17 +59,30 @@ export default function App() {
   }
 
   function handleRoll() {
-    setDice((prevDice) => {
-      return prevDice.map((item) => {
-        return item.selected
-          ? item
-          : { ...item, value: generateRandomNumber() };
+    if (isWinner) {
+      setDice(diceData);
+      setCounter(0);
+      setIsWinner(false);
+      setButton("Roll");
+    } else {
+      setDice((prevDice) => {
+        return prevDice.map((item) => {
+          return item.selected
+            ? item
+            : { ...item, value: generateRandomNumber() };
+        });
       });
-    });
+      setCounter(counter + 1);
+    }
   }
 
-  winnerCheck();
-  let victoryMsg = isWinner ? "Congrats! We have got a Winner!" : "Roll";
+  React.useEffect(() => {
+    setIsAllSelected(dice.every((item) => item.selected));
+  }, [dice]);
+
+  React.useEffect(() => {
+    winnerCheck();
+  }, [isAllSelected]);
 
   return (
     <main>
@@ -65,8 +94,18 @@ export default function App() {
       <div className="game--container">
         <div className="dice--container">{diceElements}</div>
         <button className="roll--button" onClick={handleRoll}>
-          {victoryMsg}
+          {button}
         </button>
+      </div>
+      <div className="score">
+        <div className="current--score">
+          <div className="counter">Counter: {counter}</div>
+          {/* <div className="timer">Timer: Here</div> */}
+        </div>
+        <div className="best--score">
+          <div className="highscoreCounter">Best: {highscoreCounter}</div>
+          {/* <div className="highscoreTimer">Best: Here</div> */}
+        </div>
       </div>
     </main>
   );
