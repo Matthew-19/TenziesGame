@@ -39,14 +39,10 @@ export default function App() {
       if (playerWon) {
         setIsWinner(true);
         setButton("Congrats! You Won!!");
-        console.log("best counter: " , localStorage.getItem("counter"))
-        console.log("current counter: ", counter)
 
-        highscoreCounter =
-          localStorage.getItem("counter") === 0 || localStorage.getItem("counter")
-            ? Math.min(localStorage.getItem("counter"), counter)
-            : counter;
-        console.log(highscoreCounter);
+        highscoreCounter = localStorage.getItem("counter")
+          ? Math.min(localStorage.getItem("counter"), counter)
+          : counter;
         localStorage.setItem("counter", highscoreCounter);
       }
     }
