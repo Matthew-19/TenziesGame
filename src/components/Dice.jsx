@@ -1,11 +1,11 @@
-import React from "react"
+import handleSelect from "../functions/handleSelect"
 
 export default function Dice(props) {
     return (
         <div 
             className={`dice 
             ${props.selected ? "selected" : ""}`}
-            onClick={()=> props.handleClick(props.id)}
+            onClick={()=> handleSelect(props.id, props.setDice)}
         >
             {props.value}
         </div>
