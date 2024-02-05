@@ -1,13 +1,15 @@
-import handleSelect from "../functions/handleSelect"
+import handleSelect from "../functions/handleSelect";
 
 export default function Dice(props) {
-    return (
-        <div 
-            className={`dice 
-            ${props.selected ? "selected" : ""}`}
-            onClick={()=> handleSelect(props.id, props.setDice)}
-        >
-            {props.value}
-        </div>
-    )
+  const { id, selected, value, setDice, running } = props;
+  return (
+    <div
+      className={`dice ${selected ? "selected" : ""}`}
+      onClick={() => {
+        if (running) handleSelect(id, setDice);
+      }}
+    >
+      {value}
+    </div>
+  );
 }

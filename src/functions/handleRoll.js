@@ -6,21 +6,30 @@ export default function handleRoll(
   diceData,
   setRolls,
   setIsWinner,
-  setButton
+  setButton,
+  running,
+  setRunning,
+  setTime
 ) {
   if (isWinner) {
     setDice(diceData);
     setRolls(0);
     setIsWinner(false);
-    setButton("Roll");
+    setButton("Start");
+    setTime(0)
   } else {
-    setDice((prevDice) => {
-      return prevDice.map((item) => {
-        return item.selected
-          ? item
-          : { ...item, value: generateRandomNumber() };
+    if (!running) {
+      setRunning(true);
+      setButton("Roll");
+    } else {
+      setDice((prevDice) => {
+        return prevDice.map((item) => {
+          return item.selected
+            ? item
+            : { ...item, value: generateRandomNumber() };
+        });
       });
-    });
-    setRolls((prevRoll) => prevRoll + 1);
+      setRolls((prevRoll) => prevRoll + 1);
+    }
   }
 }

@@ -10,8 +10,11 @@ import BackArrow from "../components/BackArrow";
 import { AppContext } from "../App";
 
 export default function Welcome() {
-  const { chosePlayer, setChosePlayer } = React.useContext(AppContext);
+  const { chosePlayer, setChosePlayer, playersLog } =
+    React.useContext(AppContext);
   const [playerType, setPlayerType] = React.useState(null);
+  const isEmptyPlayersLog = playersLog.length === 0 ? true : false;
+  const [showLockedMsg, setShowLockedMsg] = React.useState(false);
 
   return (
     <section className="welcome">
@@ -36,14 +39,23 @@ export default function Welcome() {
               New Player
             </button>
             <button
-              className="choose-player--prev"
+              className={`choose-player--prev ${
+                isEmptyPlayersLog ? "locked" : ""
+              }`}
               onClick={() => {
-                setPlayerType("previous");
-                setChosePlayer(true);
+                if (!isEmptyPlayersLog) {
+                  setPlayerType("previous");
+                  setChosePlayer(true);
+                } else {
+                  setShowLockedMsg(true);
+                }
               }}
             >
               Previous Player
             </button>
+            {isEmptyPlayersLog && showLockedMsg && (
+              <span className="check-msg warning">No Previous Players!<br /> Please make a new player first.</span>
+            )}
           </div>
         )}
       </main>

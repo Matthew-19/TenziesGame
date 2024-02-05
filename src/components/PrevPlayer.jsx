@@ -1,6 +1,16 @@
 import React from "react";
+
+// Icons
 import { MdDelete } from "react-icons/md";
+
+// Context
 import { AppContext } from "../App";
+
+// Components
+import NewPlayer from "./NewPlayer";
+
+// Functions
+import formatTime from "../functions/formatTime";
 
 export default function PrevPlayer() {
   const { playersLog, setPlayersLog, player, setPlayer, setPages } =
@@ -49,6 +59,7 @@ export default function PrevPlayer() {
         <div className="prev-player--info">
           <span className="prev-player--name">{player.playerName}</span>
           <span className="prev-player--rolls">rolls: {player.rolls}</span>
+          <span className="prev-player--time">time: {formatTime(player.time)}</span>
         </div>
         <span className="prev-player--delete">
           <MdDelete
@@ -62,19 +73,29 @@ export default function PrevPlayer() {
 
   return (
     <>
-      <div className="prevPlayer">
-        <h3>Previous Players:</h3>
-        <div className="playersList">{prevPlayersElements}</div>
-      </div>
-      {!player.playerName && showMsg && (
+      {playersLog.length === 0 ? (
+        <div className="newPlayer">
+          <p className="check-msg warning">All Players have been deleted.</p>
+          <p className="check-msg warning">please make a new player.</p>
+          <NewPlayer />
+        </div>
+      ) : (
+        <div className="prevPlayer">
+          <h3>Previous Players:</h3>
+          <div className="playersList">{prevPlayersElements}</div>
+        </div>
+      )}
+      {!player.playerName && showMsg && playersLog.length !== 0 && (
         <span className="check-msg warning">You need to select a player!</span>
       )}
-      <button
-        className="purple-button start-button"
-        onClick={handleStartPrevPlayer}
-      >
-        Start Game
-      </button>
+      {playersLog.length !== 0 && (
+        <button
+          className="purple-button start-button"
+          onClick={handleStartPrevPlayer}
+        >
+          Start Game
+        </button>
+      )}
     </>
   );
 }

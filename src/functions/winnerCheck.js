@@ -5,7 +5,9 @@ export default function winnerCheck(
   setIsWinner,
   setButton,
   player,
-  setPlayer
+  setPlayer,
+  setRunning,
+  time
 ) {
   if (isAllSelected) {
     let firstNum = dice[0].value;
@@ -13,11 +15,18 @@ export default function winnerCheck(
     if (playerWon) {
       setIsWinner(true);
       setButton("Congrats! You Won!!");
+      setRunning(false);
 
       const bestRolls =
         player.rolls === 0 ? rolls : Math.min(rolls, player.rolls);
 
-      setPlayer((prevPlayer) => ({ ...prevPlayer, rolls: bestRolls }));
+      const bestTime = player.time === 0 ? time : Math.min(time, player.time);
+
+      setPlayer((prevPlayer) => ({
+        ...prevPlayer,
+        rolls: bestRolls,
+        time: bestTime,
+      }));
     }
   }
 }

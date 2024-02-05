@@ -161,7 +161,8 @@ section.welcome {
 .check-msg {
   font-size: 14px;
   text-transform: capitalize;
-  text-indent: 5px;
+  padding-left: 5px;
+  cursor: default;
 }
 .check-msg.warning {
   color: red;
@@ -172,6 +173,15 @@ section.welcome {
 /* New Player */
 
 /* Prev Player */
+.locked {
+  background-color: gray;
+  cursor: default !important;
+}
+.locked:hover {
+  background-color: gray !important;
+  color: var(--black) !important;
+}
+
 .prevPlayer {
   display: flex;
   flex-direction: column;
@@ -209,6 +219,7 @@ section.welcome {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  text-transform: capitalize;
 }
 
 .delete-icon {
@@ -262,12 +273,12 @@ section.game {
 }
 
 .score {
-  width: 100%;
   padding: 10px;
   margin-top: 10px;
   gap: 10px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .score div {

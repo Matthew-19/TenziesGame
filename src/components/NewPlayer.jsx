@@ -6,6 +6,7 @@ export default function NewPlayer() {
     React.useContext(AppContext);
 
   const [isPlayerExist, setIsPlayerExist] = React.useState(false);
+  const [showMsg, setShowMsg] = React.useState(false);
 
   function handleNewPlayer(event) {
     const { name, value } = event.target;
@@ -25,6 +26,8 @@ export default function NewPlayer() {
     if (!isPlayerExist && player.playerName) {
       setPages(1);
       setPlayersLog((prevLog) => [...prevLog, player]);
+    } else {
+      setShowMsg(true);
     }
   }
 
@@ -48,6 +51,9 @@ export default function NewPlayer() {
           <span className="check-msg success">You are good to go.</span>
         )}
       </div>
+      {showMsg && (
+        <span className="check-msg warning">Please enter a name first</span>
+      )}
       <button
         className="purple-button start-button"
         onClick={handleStartNewPlayer}
